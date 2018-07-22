@@ -9,6 +9,8 @@ cache:
   directories:
   - $HOME/.cache/rebar3/
 otp_release:
+- 21.0
+- 20.2
 - 19.3
 - 19.0
 - 18.3
