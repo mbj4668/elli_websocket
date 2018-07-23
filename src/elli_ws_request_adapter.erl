@@ -208,8 +208,10 @@ websocket_handler_init(#req_adapter{req=Req}=RA, Handler, HandlerOpts) ->
       HandlerState :: any(),
       Result :: {ok, req(), any()} |
                 {ok, req(), any(), hibernate} |
-                {reply, elli_websocket:payload(), req(), any()} |
-                {reply, elli_websocket:payload(), hibernate, req(), any()} |
+                {reply, elli_ws_protocol:frame() | [elli_ws_protocol:frame()],
+                 req(), any()} |
+                {reply, elli_ws_protocol:frame() | [elli_ws_protocol:frame()],
+                 req(), any(), hibernate} |
                 {shutdown, req(), any()}.
 websocket_handler_callback(#req_adapter{req=Req}=RA, Handler, Callback, Message, HandlerState) ->
     case Handler:Callback(Req, Message, HandlerState) of
