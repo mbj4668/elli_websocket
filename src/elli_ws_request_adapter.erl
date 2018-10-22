@@ -66,7 +66,7 @@
 
 -type req() :: #req_adapter{}.
 
--ifdef(OTP_RELEASE). %% this implies 21 or higher
+-ifdef(post20).
 -define(EXCEPTION(Class, Reason, Stacktrace), Class:Reason:Stacktrace).
 -define(GET_STACK(Stacktrace), Stacktrace).
 -else.
