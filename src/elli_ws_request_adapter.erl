@@ -66,6 +66,13 @@
 
 -type req() :: #req_adapter{}.
 
+-ifdef(OTP_RELEASE). %% this implies 21 or higher
+-define(EXCEPTION(Class, Reason, Stacktrace), Class:Reason:Stacktrace).
+-define(GET_STACK(Stacktrace), Stacktrace).
+-else.
+-define(EXCEPTION(Class, Reason, _), Class:Reason).
+-define(GET_STACK(_), erlang:get_stacktrace()).
+-endif.
 
 %%
 %%
@@ -233,10 +240,9 @@ websocket_handler_handle_event(#req_adapter{req=Req}, Handler, Name, EventArgs, 
     try
         Handler:websocket_handle_event(Name, [Req|EventArgs], HandlerOpts)
     catch
-        EvClass:EvError ->
+        ?EXCEPTION(EvClass, EvError, ST) ->
             error_logger:error_msg("~p:handle_event/3 crashed ~p:~p~n~p",
-                                   [Handler, EvClass, EvError,
-                                    erlang:get_stacktrace()])
+                                   [Handler, EvClass, EvError, ?GET_STACK(ST)])
     end.
 
 %% @doc Atoms used to identify messages in {active, once | true} mode.
