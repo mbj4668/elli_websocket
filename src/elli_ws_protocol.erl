@@ -329,12 +329,12 @@ websocket_data(State, Req, HandlerState, Data) ->
     handler_before_loop(State, Req, HandlerState, Data).
 
 %% Initialize or update fragmentation state.
-%% -spec websocket_data(#state{}, Req, any(),
-%%   opcode(), non_neg_integer(), mask_key(), binary(), rsv(), 0 | 1)
-%%   -> {ok, Req, cowboy_middleware:env()}
-%%   | {suspend, module(), atom(), [any()]}
-%%   when Req::elli_ws_request_adapter:req().
 %% The opcode is only included in the first frame fragment.
+-spec websocket_data(#state{}, Req, any(),
+                     opcode(), non_neg_integer(), mask_key(), binary(), rsv(), 0 | 1)
+                    -> {ok, Req, cowboy_middleware:env()}
+                           | {suspend, module(), atom(), [any()]}
+                           when Req::elli_ws_request_adapter:req().
 websocket_data(State=#state{frag_state=undefined}, Req, HandlerState,
                Opcode, Len, MaskKey, Data, Rsv, 0) ->
     websocket_payload(State#state{frag_state={nofin, Opcode, <<>>}},
