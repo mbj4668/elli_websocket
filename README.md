@@ -22,13 +22,12 @@
 
 ## Installation
 
-You can add `elli_websocket` to your application by adding it as a dependency to
-your [elli][] application.
+You can add `elli_websocket` to your application by adding it as a dependency alongside [elli][].
 
 ```erlang
 {deps, [
-  {elli, "2.0.1"},
-  {elli_websocket, "0.1.0"}
+  {elli, "3.1.0"},
+  {elli_websocket, "0.1.1"}
 ]}.
 ```
 
