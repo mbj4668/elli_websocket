@@ -55,7 +55,13 @@ init_ws(_, _, _) ->
 
 handle('websocket', [<<"my">>, <<"websocket">>], Req, Args) ->
     elli_websocket:upgrade(Req, Args),
-    {close, <<>>};
+
+    %% websocket is closed:
+    %% See RFC-6455 (https://tools.ietf.org/html/rfc6455) for a list of
+    %% valid WS status codes than can be used on a close frame.
+    %% Note that the second element is the reason and is abitrary but should be meaningful
+    %% in regards to your server and sub-protocol.
+    {<<"1000">>, <<"Closed">>};
 
 handle('GET', [<<"my">>, <<"websocket">>], _Req, _Args) ->
     {200, [], <<"Use an upgrade request">>};
