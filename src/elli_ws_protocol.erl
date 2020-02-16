@@ -213,12 +213,12 @@ websocket_handshake(State=#state{key=Key, deflate_frame=DeflateFrame, handler=Ha
 %%   | {suspend, module(), atom(), [any()]}
 %%   when Req::elli_ws_request_adapter:req().
 handler_before_loop(State=#state{socket=Socket, hibernate=true}, Req, HandlerState, SoFar) ->
-    ok = elli_tcp:setopts(Socket, [{active, once}]),
+    elli_tcp:setopts(Socket, [{active, once}]),
     {suspend, ?MODULE, handler_loop,
      [State#state{hibernate=false}, Req, HandlerState, SoFar]};
 handler_before_loop(State=#state{socket=Socket},
                     Req, HandlerState, SoFar) ->
-    ok = elli_tcp:setopts(Socket, [{active, once}]),
+    elli_tcp:setopts(Socket, [{active, once}]),
     handler_loop(State, Req, HandlerState, SoFar).
 
 %% -spec handler_loop_timeout(#state{}) -> #state{}.
@@ -542,7 +542,7 @@ is_utf8(_) ->
 websocket_payload_loop(State=#state{socket={_, Port}=Socket,
                                     messages={OK, Closed, Error}, timeout_ref=TRef},
                        Req, HandlerState, Opcode, Len, MaskKey, Unmasked, UnmaskedLen, Rsv) ->
-    ok = elli_tcp:setopts(Socket, [{active, once}]),
+    elli_tcp:setopts(Socket, [{active, once}]),
     receive
         {OK, Port, Data} ->
             State2 = handler_loop_timeout(State),
